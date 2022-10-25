@@ -23,24 +23,22 @@ def get_reviews_by(place_id):
                  strict_slashes=False)
 def get_review(review_id):
     """Retrieves a Review object"""
-    try:
-        review = storage.get(Review, review_id)
+    review = storage.get(Review, review_id)
+    if review:
         return jsonify(review.to_dict())
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/reviews/<string:review_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_review(review_id):
     """Deletes a Review object"""
-    try:
-        review = storage.get(Review, review_id)
+    review = storage.get(Review, review_id)
+    if review:
         review.delete()
         storage.save()
         return jsonify({})
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/places/<string:place_id>/reviews', methods=['POST'],

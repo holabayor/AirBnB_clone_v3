@@ -21,24 +21,22 @@ def get_all_users():
                  strict_slashes=False)
 def get_user(user_id):
     """Retrieves a User object"""
-    try:
-        user = storage.get(User, user_id)
+    user = storage.get(User, user_id)
+    if user:
         return jsonify(user.to_dict())
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/users/<string:user_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_user(user_id):
     """Deletes a User object"""
-    try:
-        user = storage.get(User, user_id)
+    user = storage.get(User, user_id)
+    if user:
         user.delete()
         storage.save()
         return jsonify({})
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/users', methods=['POST'], strict_slashes=False)

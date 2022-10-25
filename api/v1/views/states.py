@@ -21,24 +21,22 @@ def get_all_states():
                  strict_slashes=False)
 def get_state(state_id):
     """Retrieves a State objects"""
-    try:
-        state = storage.get(State, state_id)
+    state = storage.get(State, state_id)
+    if state:
         return jsonify(state.to_dict())
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/states/<string:state_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_state(state_id):
     """Deletes a State objects"""
-    try:
-        state = storage.get(State, state_id)
+    state = storage.get(State, state_id)
+    if state:
         state.delete()
         storage.save()
         return jsonify({})
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/states', methods=['POST'], strict_slashes=False)

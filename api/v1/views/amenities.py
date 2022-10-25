@@ -19,24 +19,22 @@ def get_all_amenities():
                  strict_slashes=False)
 def get_amenity(amenity_id):
     """Retrieves a Amenity object"""
-    try:
-        amenity = storage.get(Amenity, amenity_id)
+    amenity = storage.get(Amenity, amenity_id)
+    if amenity:
         return jsonify(amenity.to_dict())
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/amenities/<string:amenity_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_amenity(amenity_id):
     """Deletes a Amenity object"""
-    try:
-        amenity = storage.get(Amenity, amenity_id)
+    amenity = storage.get(Amenity, amenity_id)
+    if amenity:
         amenity.delete()
         storage.save()
         return jsonify({})
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/amenities', methods=['POST'], strict_slashes=False)

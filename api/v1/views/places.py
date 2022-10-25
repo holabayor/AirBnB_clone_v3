@@ -24,24 +24,22 @@ def get_places_by(city_id):
                  strict_slashes=False)
 def get_place(place_id):
     """ Gets a Place object."""
-    try:
-        place = storage.get(Place, place_id)
+    place = storage.get(Place, place_id)
+    if place:
         return jsonify(place.to_dict())
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/places/<string:place_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_place(place_id):
     """Deletes a Place object"""
-    try:
-        place = storage.get(Place, place_id)
+    place = storage.get(Place, place_id)
+    if place:
         place.delete()
         storage.save()
         return jsonify({})
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/cities/<string:city_id>/places', methods=['POST'],

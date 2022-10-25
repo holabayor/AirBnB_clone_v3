@@ -23,24 +23,22 @@ def get_cities_by(state_id):
                  strict_slashes=False)
 def get_city(city_id):
     """Retrieves a City object"""
-    try:
-        city = storage.get(City, city_id)
+    city = storage.get(City, city_id)
+    if city:
         return jsonify(city.to_dict())
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/cities/<string:city_id>', methods=['DELETE'],
                  strict_slashes=False)
 def delete_city(city_id):
     """Deletes a City object"""
-    try:
-        city = storage.get(City, city_id)
+    city = storage.get(City, city_id)
+    if city:
         city.delete()
         storage.save()
         return jsonify({})
-    except KeyError:
-        abort(404)
+    abort(404)
 
 
 @app_views.route('/states/<string:state_id>/cities', methods=['POST'],
