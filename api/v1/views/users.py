@@ -53,8 +53,7 @@ def create_user():
         user = User(**data)
         user.save()
         response = jsonify(user.to_dict())
-        response.status_code = 201
-        return response
+        return make_response(response, 201)
     except Exception:
         return make_response(jsonify({"error": "Not a JSON"}), 400)
 

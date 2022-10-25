@@ -13,10 +13,11 @@ from models.city import City
 def get_places_by(city_id):
     """Retrieves the list of all Place objects of a City"""
     city = storage.get(City, city_id)
-    place_dict = []
-    for place in city.places:
-        place_dict.append(place.to_dict())
-    return jsonify(place_dict)
+    if city:
+        place_dict = [place.to_dict() for place in city]
+        return jsonify(place_dict)
+    else:
+        abort(404)
 
 
 @app_views.route('/places/<string:place_id>', methods=['GET'],
@@ -54,6 +55,9 @@ def create_place(city_id):
             return make_response(jsonify({"error": "Missing name"}), 400)
         if data.get("user_id") is None:
             return make_response(jsonify({"error": "Missing user_id"}), 400)
+        user = storage.get(User, data.get(user_id))
+        if user is None:
+            abort(404)
         data["city_id"] = city_id
         place = Place(**data)
         place.save()
